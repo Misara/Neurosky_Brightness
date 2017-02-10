@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="true"
+        jar="C:\Users\Missa\AndroidStudioProjects\Neurosky_Brightness\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\25.1.1\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="ecb496cc08dd52551fc5ec6db3bc0632e95a89bb">
+        <dex dex="C:\Users\Missa\AndroidStudioProjects\Neurosky_Brightness\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-appcompat-v7-25.1.1_f2f3dfe2ed6c017a7e6808ef44a3f9de5de68967\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Missa\AndroidStudioProjects\Neurosky_Brightness\libs\libStreamSDK_v1.2.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="033b7351fc2173a9ac8e82a355c877495759eb67">
+        <dex dex="C:\Users\Missa\AndroidStudioProjects\Neurosky_Brightness\app\build\intermediates\transforms\dex\debug\folders\1000\2\libStreamSDK_v1.2.0_4a756cb7537a120b270e025a4a5ecdac1262d6c4\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Missa\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\25.1.1\support-annotations-25.1.1.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="b59b6ee8d6ecc03e672d253800430343493a6ed8">
+        <dex dex="C:\Users\Missa\AndroidStudioProjects\Neurosky_Brightness\app\build\intermediates\transforms\dex\debug\folders\1000\10\support-annotations-25.1.1_235ee9c2a9c085ee2a78c67aae17e77df85fe9ed\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Missa\AndroidStudioProjects\Neurosky_Brightness\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="867ff5a1cb7f1636abcd3440c2325dc69803edf2">
+        <dex dex="C:\Users\Missa\AndroidStudioProjects\Neurosky_Brightness\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run_f6f768b1ade663d109031df8b3f3b3b6f19afdb1\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Missa\AndroidStudioProjects\Neurosky_Brightness\app\build\intermediates\exploded-aar\com.android.support\animated-vector-drawable\25.1.1\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="0d191c1a09e4892d059e5ce749e4ad4e08129e35">
+        <dex dex="C:\Users\Missa\AndroidStudioProjects\Neurosky_Brightness\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-animated-vector-drawable-25.1.1_309c3e70408113564d535776ac699a64706e952e\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Missa\AndroidStudioProjects\Neurosky_Brightness\app\build\intermediates\exploded-aar\com.android.support\support-fragment\25.1.1\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="e2719c102dca3a7a5b02ce07f769362da6ddb4ab">
+        <dex dex="C:\Users\Missa\AndroidStudioProjects\Neurosky_Brightness\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-fragment-25.1.1_ec7fd096868fa504ddf50c0e4777bf0f29091ed4\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Missa\AndroidStudioProjects\Neurosky_Brightness\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="681415c417c5eb22a2d9fcc8fdc57f26654e8479">
+        <dex dex="C:\Users\Missa\AndroidStudioProjects\Neurosky_Brightness\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run-bootstrap_4574e5908aeb9f19711bcf5b46668250310ca82e\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Missa\AndroidStudioProjects\Neurosky_Brightness\app\build\intermediates\exploded-aar\com.android.support\support-core-utils\25.1.1\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="0fb891e8f0cfba0513043a7bb357513d229ca2cd">
+        <dex dex="C:\Users\Missa\AndroidStudioProjects\Neurosky_Brightness\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-core-utils-25.1.1_05dc1e3465a8244a5e226d50d4267e6770ef7cc1\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Missa\AndroidStudioProjects\Neurosky_Brightness\app\build\intermediates\exploded-aar\com.android.support\support-compat\25.1.1\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="02741d05d4b697fba5e279e9881aaa1da0ca7c7f">
+        <dex dex="C:\Users\Missa\AndroidStudioProjects\Neurosky_Brightness\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-compat-25.1.1_9f9bbbb2f608351b46adb21d18831e94821905e2\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Missa\AndroidStudioProjects\Neurosky_Brightness\app\build\intermediates\exploded-aar\com.android.support\support-vector-drawable\25.1.1\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="c03bf57f358aa10d253f21989e93bcf6014b3b17">
+        <dex dex="C:\Users\Missa\AndroidStudioProjects\Neurosky_Brightness\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-vector-drawable-25.1.1_d14967eed6e7d35b4e2cc3757a94159438e89c6d\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Missa\AndroidStudioProjects\Neurosky_Brightness\app\build\intermediates\exploded-aar\com.android.support\support-media-compat\25.1.1\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="7bde4c34162092e0a77e7f12dc85ed77c484cf5c">
+        <dex dex="C:\Users\Missa\AndroidStudioProjects\Neurosky_Brightness\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-media-compat-25.1.1_7f35527c51e56027fd69f1e8bf9f1a921e3b4c54\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Missa\AndroidStudioProjects\Neurosky_Brightness\app\build\intermediates\exploded-aar\com.android.support\support-core-ui\25.1.1\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="3e04ac8ca644ea7baddf6fdcf72e15c79e9df94a">
+        <dex dex="C:\Users\Missa\AndroidStudioProjects\Neurosky_Brightness\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-core-ui-25.1.1_cddc5b13e24cca2f47fa874f94c7197fe61dadc1\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Missa\AndroidStudioProjects\Neurosky_Brightness\app\build\intermediates\exploded-aar\com.android.support\support-v4\25.1.1\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="d7c42c80f6509b9ea4db28ca7859ffae08ec5741">
+        <dex dex="C:\Users\Missa\AndroidStudioProjects\Neurosky_Brightness\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-v4-25.1.1_eb6ee9e3fd7ca701a72619b412eff407ba603435\classes.dex" />
+    </item>
+
+</items>
