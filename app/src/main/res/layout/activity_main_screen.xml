@@ -17,4 +17,10 @@
         android:layout_centerHorizontal="true"
         style="@android:style/Widget.SeekBar"
     />
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/brightnessBar"
+        android:layout_marginTop="10dp"/>
 </RelativeLayout>
