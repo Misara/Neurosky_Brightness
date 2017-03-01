@@ -12,15 +12,32 @@
 
     <SeekBar
         android:id="@+id/brightnessBar"
-        android:layout_width="255dp"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         style="@android:style/Widget.SeekBar"
-    />
+        />
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/brightnessBar"
-        android:layout_marginTop="10dp"/>
+        android:layout_marginTop="10dp"
+        />
+    <ProgressBar
+        android:id="@+id/meditationBar"
+        style="@android:style/Widget.ProgressBar.Horizontal"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="200dp"
+        android:text="meditation"
+        />
+    <ProgressBar
+        android:id="@+id/attentionBar"
+        style="@android:style/Widget.ProgressBar.Horizontal"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="300dp"
+        android:text="attention"
+        />
 </RelativeLayout>
