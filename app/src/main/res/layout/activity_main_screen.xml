@@ -31,7 +31,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="200dp"
         android:text="meditation"
-        />
+        android:indeterminate="false" />
     <ProgressBar
         android:id="@+id/attentionBar"
         style="@android:style/Widget.ProgressBar.Horizontal"
@@ -40,4 +40,22 @@
         android:layout_marginTop="300dp"
         android:text="attention"
         />
+
+    <Button
+        android:text="Start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignStart="@+id/brightnessBar"
+        android:layout_marginBottom="48dp"
+        android:id="@+id/start_button" />
+
+    <Button
+        android:text="Stop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/start_button"
+        android:layout_alignEnd="@+id/attentionBar"
+        android:layout_marginEnd="30dp"
+        android:id="@+id/stop_button" />
 </RelativeLayout>

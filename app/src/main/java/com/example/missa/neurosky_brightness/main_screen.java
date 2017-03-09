@@ -1,9 +1,16 @@
 package com.example.missa.neurosky_brightness;
+import java.util.Set;
+import android.app.Activity;
 
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothManager;
+import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.system.*;
@@ -11,15 +18,22 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.os.Handler;
 import android.os.Message;
+import android.view.View.OnClickListener;
+import android.view.View;
 
 import com.neurosky.connection.ConnectionStates;
 import com.neurosky.connection.TgStreamHandler;
 import com.neurosky.connection.TgStreamReader;
+import com.neurosky.connection.EEGPower;
 import com.neurosky.connection.DataType.MindDataType;
 
+import com.neurosky.connection.DataType.BodyDataType;
+
+
+/*
 public class main_screen extends AppCompatActivity {
 /*  main screen of app, contains brightness slider.
- */
+
     private SeekBar brightnessBar;
     private ProgressBar meditationBar;
     private int meditationVal;
@@ -27,7 +41,7 @@ public class main_screen extends AppCompatActivity {
     private int attentionVal;
     private int brightnessStatus;
     private TextView textView;
-    private TgStreamReader tagStreamReader;
+    private TgStreamReader tgStreamReader;
     private BluetoothAdapter bluetoothAdapter;
 
     @Override
@@ -35,7 +49,6 @@ public class main_screen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_screen);
         initValirables();
-
 
         try {
             // ensure bluetooth is running
@@ -55,9 +68,9 @@ public class main_screen extends AppCompatActivity {
 
 
         // Example of constructor public TgStreamReader(BluetoothAdapter ba, TgStreamHandler tgStreamHandler)
-        tagStreamReader = new TgStreamReader(bluetoothAdapter, tagStreamHandler);
-        tagStreamReader.startLog();
-        tagStreamReader.connect();
+        tgStreamReader = new TgStreamReader(bluetoothAdapter, tagStreamHandler);
+        tgStreamReader.startLog();
+        tgStreamReader.connect();
 
         Log.d("debug", "trying to connect");
         // brightness adjustment bar
@@ -110,7 +123,7 @@ public class main_screen extends AppCompatActivity {
                 case ConnectionStates.STATE_CONNECTED:
                     // Do something when connected
                     try {
-                        tagStreamReader.start();
+                        tgStreamReader.start();
                         Toast.makeText(getApplicationContext(), "Connected", Toast.LENGTH_SHORT).show();
                     }
                     catch (Exception e){
@@ -120,14 +133,14 @@ public class main_screen extends AppCompatActivity {
                     break;
                 case ConnectionStates.STATE_WORKING:
                     // Do something when working
-                    tagStreamReader.startRecordRawData();
+                    tgStreamReader.startRecordRawData();
 
                     break;
                 case ConnectionStates.STATE_GET_DATA_TIME_OUT:
                     // Do something when getting data timeout
 
                     //(9) demo of recording raw data, exception handling
-                    tagStreamReader.stopRecordRawData();
+                    tgStreamReader.stopRecordRawData();
 
                     Toast.makeText(getApplicationContext(), "Timeout", Toast.LENGTH_SHORT).show();
                     break;
@@ -201,6 +214,286 @@ public class main_screen extends AppCompatActivity {
         meditationVal = -1;
 
     }
-
-
 }
+*/
+
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
+public class main_screen extends Activity {
+
+    private static final String TAG = main_screen.class.getSimpleName();
+    private TgStreamReader tgStreamReader;
+    private BluetoothAdapter mBluetoothAdapter;
+    private BluetoothDevice mBluetoothDevice;
+    private String address = null;
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main_screen);
+
+        initView();
+
+        try {
+            // (1) Make sure that the device supports Bluetooth and Bluetooth is on
+            mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+
+            if (mBluetoothAdapter == null || !mBluetoothAdapter.isEnabled()) {
+                Toast.makeText(
+                        getApplicationContext(),
+                        "Please enable your Bluetooth and re-run this program !",
+                        Toast.LENGTH_LONG).show();
+                finish();
+            }
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.i(TAG, "error:" + e.getMessage());
+            return;
+        }
+
+        brightnessBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            int brightness = 0;
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                // changes screen brightness with slider
+                //Toast.makeText(getApplicationContext(), "Changing seekbar's progress", Toast.LENGTH_SHORT).show();
+                brightness = (int) (progress * 2.55);
+                android.provider.Settings.System.putInt(main_screen.super.getContentResolver(),
+                        android.provider.Settings.System.SCREEN_BRIGHTNESS, brightness);
+                textView.setText("at " + progress + "% of " + brightnessBar.getMax() + "%");
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                //Toast.makeText(getApplicationContext(), "Started tracking seekbar", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                //Toast.makeText(getApplicationContext(), "Stopped tracking seekbar", Toast.LENGTH_SHORT).show();}
+            }
+        }
+        );
+
+        // Example of constructor public TgStreamReader(BluetoothAdapter ba, TgStreamHandler tgStreamHandler)
+        tgStreamReader = new TgStreamReader(mBluetoothAdapter, callback);
+
+        // (2) Demo of setGetDataTimeOutTime, the default time is 5s, please call it before connect() of connectAndStart()
+        tgStreamReader.setGetDataTimeOutTime(6);
+        // (3) Demo of startLog, you will get more sdk log by logcat if you call this function
+        tgStreamReader.startLog();
+
+    }
+
+    private SeekBar brightnessBar;
+    private ProgressBar meditationBar;
+    private int meditationVal;
+    private ProgressBar attentionBar;
+    private int attentionVal;
+    private Button startButton;
+    private Button stopButton;
+    private int brightnessStatus;
+    private TextView textView;
+
+    private int badPacketCount = 0;
+
+    private void initView() {
+        // initialize variables
+        brightnessBar = (SeekBar) findViewById(R.id.brightnessBar);
+        textView = (TextView) findViewById(R.id.textView);
+        attentionBar = (ProgressBar) findViewById(R.id.attentionBar);
+        meditationBar = (ProgressBar) findViewById(R.id.meditationBar);
+        startButton = (Button) findViewById(R.id.start_button);
+        stopButton = (Button) findViewById(R.id.stop_button);
+
+        attentionVal = -1;
+        meditationVal = -1;
+
+        startButton.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+                badPacketCount = 0;
+
+                // (5) demo of isBTConnected
+                if(tgStreamReader != null && tgStreamReader.isBTConnected()){
+
+                    // Prepare for connecting
+                    tgStreamReader.stop();
+                    tgStreamReader.close();
+                }
+                tgStreamReader.connect();
+            }
+        });
+
+        stopButton.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+
+                tgStreamReader.stop();
+                tgStreamReader.close();
+            }
+
+        });
+
+
+    }
+
+    public void stop() {
+        if(tgStreamReader != null){
+            tgStreamReader.stop();
+            tgStreamReader.close();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        //(6) use close() to release resource
+        if(tgStreamReader != null){
+            tgStreamReader.close();
+            tgStreamReader = null;
+        }
+        super.onDestroy();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        stop();
+    }
+
+    // (7) demo of TgStreamHandler
+    private TgStreamHandler callback = new TgStreamHandler() {
+
+        @Override
+        public void onStatesChanged(int connectionStates) {
+            // TODO Auto-generated method stub
+            Log.d(TAG, "connectionStates change to: " + connectionStates);
+            switch (connectionStates) {
+                case ConnectionStates.STATE_CONNECTED:
+                    tgStreamReader.start();
+                    break;
+                case ConnectionStates.STATE_WORKING:
+                    //byte[] cmd = new byte[1];
+                    //cmd[0] = 's';
+                    //tgStreamReader.sendCommandtoDevice(cmd);
+
+                    break;
+                case ConnectionStates.STATE_GET_DATA_TIME_OUT:
+                    //get data time out
+                    break;
+                case ConnectionStates.STATE_COMPLETE:
+                    //read file complete
+                    break;
+                case ConnectionStates.STATE_STOPPED:
+                    break;
+                case ConnectionStates.STATE_DISCONNECTED:
+                    break;
+                case ConnectionStates.STATE_ERROR:
+                    Log.d(TAG,"Connect error, Please try again!");
+                    break;
+                case ConnectionStates.STATE_FAILED:
+                    Log.d(TAG,"Connect failed, Please try again!");
+                    break;
+            }
+            Message msg = LinkDetectedHandler.obtainMessage();
+            msg.what = MSG_UPDATE_STATE;
+            msg.arg1 = connectionStates;
+            LinkDetectedHandler.sendMessage(msg);
+
+
+        }
+
+        @Override
+        public void onRecordFail(int a) {
+            // TODO Auto-generated method stub
+            Log.e(TAG,"onRecordFail: " +a);
+
+        }
+
+        @Override
+        public void onChecksumFail(byte[] payload, int length, int checksum) {
+            // TODO Auto-generated method stub
+
+            badPacketCount ++;
+            Message msg = LinkDetectedHandler.obtainMessage();
+            msg.what = MSG_UPDATE_BAD_PACKET;
+            msg.arg1 = badPacketCount;
+            LinkDetectedHandler.sendMessage(msg);
+
+        }
+
+        @Override
+        public void onDataReceived(int datatype, int data, Object obj) {
+            // TODO Auto-generated method stub
+            Message msg = LinkDetectedHandler.obtainMessage();
+            msg.what = datatype;
+            msg.arg1 = data;
+            msg.obj = obj;
+            LinkDetectedHandler.sendMessage(msg);
+            //Log.i(TAG,"onDataReceived");
+        }    };
+
+    private boolean isPressing = false;
+    private static final int MSG_UPDATE_BAD_PACKET = 1001;
+    private static final int MSG_UPDATE_STATE = 1002;
+
+    int raw;
+    private Handler LinkDetectedHandler = new Handler() {
+
+        @Override
+        public void handleMessage(Message msg) {
+            // (8) demo of MindDataType
+            switch (msg.what) {
+                case MindDataType.CODE_RAW:
+                    break;
+                case MindDataType.CODE_MEDITATION:
+                    Log.d(TAG, "HeadDataType.CODE_MEDITATION " + msg.arg1);
+                    break;
+                case MindDataType.CODE_ATTENTION:
+                    Log.d(TAG, "CODE_ATTENTION " + msg.arg1);
+                    break;
+                case MindDataType.CODE_EEGPOWER:
+                    EEGPower power = (EEGPower)msg.obj;
+                    break;
+                case MindDataType.CODE_POOR_SIGNAL://
+                    int poorSignal = msg.arg1;
+                    Log.d(TAG, "poorSignal:" + poorSignal);
+                    Toast.makeText(getApplicationContext(), "Poor signal", Toast.LENGTH_SHORT).show();
+                    break;
+                case MSG_UPDATE_BAD_PACKET:
+                    break;
+                default:
+                    break;
+            }
+            super.handleMessage(msg);
+        }
+    };
+
+    public TgStreamReader createStreamReader(BluetoothDevice bd){
+
+        if(tgStreamReader == null){
+            // Example of constructor public TgStreamReader(BluetoothDevice mBluetoothDevice,TgStreamHandler tgStreamHandler)
+            tgStreamReader = new TgStreamReader(bd,callback);
+            tgStreamReader.startLog();
+        }else{
+            // (1) Demo of changeBluetoothDevice
+            tgStreamReader.changeBluetoothDevice(bd);
+
+            // (4) Demo of setTgStreamHandler, you can change the data handler by this function
+            tgStreamReader.setTgStreamHandler(callback);
+        }
+        return tgStreamReader;
+    }
+}
+
