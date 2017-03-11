@@ -18,28 +18,12 @@
         style="@android:style/Widget.SeekBar"
         />
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/brightnessText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/brightnessBar"
         android:layout_marginTop="10dp"
-        />
-    <ProgressBar
-        android:id="@+id/meditationBar"
-        style="@android:style/Widget.ProgressBar.Horizontal"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="200dp"
-        android:text="meditation"
-        android:indeterminate="false" />
-    <ProgressBar
-        android:id="@+id/attentionBar"
-        style="@android:style/Widget.ProgressBar.Horizontal"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="300dp"
-        android:text="attention"
-        />
+        android:layout_alignParentStart="true" />
 
     <Button
         android:text="Start"
@@ -48,14 +32,56 @@
         android:layout_alignParentBottom="true"
         android:layout_alignStart="@+id/brightnessBar"
         android:layout_marginBottom="48dp"
-        android:id="@+id/start_button" />
+        android:id="@+id/startButton" />
 
     <Button
         android:text="Stop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/start_button"
-        android:layout_alignEnd="@+id/attentionBar"
-        android:layout_marginEnd="30dp"
-        android:id="@+id/stop_button" />
+        android:layout_marginEnd="20dp"
+        android:id="@+id/stopButton"
+        android:layout_alignTop="@+id/startButton"
+        android:layout_alignEnd="@+id/brightnessBar" />
+
+    <ProgressBar
+        android:id="@+id/attentionBar"
+        style="@android:style/Widget.ProgressBar.Horizontal"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:text="attention"
+        android:max="255"
+        android:visibility="visible"
+        android:layout_below="@+id/brightnessText"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="84dp" />
+
+    <ProgressBar
+        android:id="@+id/meditationBar"
+        style="@android:style/Widget.ProgressBar.Horizontal"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:text="meditation"
+        android:max = "255"
+        android:visibility="visible"
+        android:layout_above="@+id/startButton"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="97dp" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/attentionBar"
+        android:layout_toEndOf="@+id/brightnessText"
+        android:layout_marginBottom="35dp"
+        android:id="@+id/attentionText" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@+id/brightnessText"
+        android:id="@+id/meditationText" />
+
 </RelativeLayout>
