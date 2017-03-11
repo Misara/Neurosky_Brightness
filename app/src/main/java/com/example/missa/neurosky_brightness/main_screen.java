@@ -215,8 +215,7 @@ public class main_screen extends Activity {
     private static final String TAG = main_screen.class.getSimpleName();
     private TgStreamReader tgStreamReader;
     private BluetoothAdapter mBluetoothAdapter;
-    private Handler actionHandler = new Handler();
-    private Handler meditationHandler = new Handler();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -274,21 +273,15 @@ public class main_screen extends Activity {
             public void run() {
                 while (attentionVal<100) {
                     // Update the progress bar
-                    runOnUiThread(new Runnable() {
+                    attentionBar.post(new Runnable() {
                         @Override
                         public void run() {
                             attentionBar.setProgress(attentionVal);
                         }
-                    });
-                }
-            }
-        }).start();
 
-        new Thread(new Runnable() {
-            public void run() {
-                while (true) {
-                    // Update the progress bar
-                    meditationHandler.post(new Runnable() {
+                    });
+                    meditationBar.post(new Runnable() {
+                        @Override
                         public void run() {
                             meditationBar.setProgress(meditationVal);
                         }
@@ -297,12 +290,6 @@ public class main_screen extends Activity {
             }
         }).start();
 
-//        attentionBar.post(new Runnable(){
-//                              @Override
-//                              public void run() {
-//                                  attentionBar.setProgress(attentionVal);
-//                              }
-//                          });
 
         // Create tag stream reader
         tgStreamReader = new TgStreamReader(mBluetoothAdapter, callback);
