@@ -1,3 +1,10 @@
+/*
+Code by Marissa Kohan
+3-23-2017
+
+This is a small app that uses the NeuroSky headset to adjust phone screen brightness based
+on the attention and meditation measures available in the NeuroSky system
+ */
 package com.example.missa.neurosky_brightness;
 import android.app.Activity;
 
@@ -5,6 +12,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.content.ContentResolver;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -23,14 +31,11 @@ import com.neurosky.connection.TgStreamReader;
 import com.neurosky.connection.EEGPower;
 import com.neurosky.connection.DataType.MindDataType;
 
-import static java.lang.Math.abs;
-
-
-public class main_screen extends Activity {
+public class main_screen extends AppCompatActivity {
 
     private static final String TAG = main_screen.class.getSimpleName();
     private static final int MAX_BRIGHTNESS = 255;
-    private static final int BRIGHT_THRESHOLD = 50;
+    private static final int BRIGHT_INCREMENT = 10;
     private ContentResolver cResolver;
     private TgStreamReader tgStreamReader;
     private BluetoothAdapter mBluetoothAdapter;
@@ -90,31 +95,10 @@ public class main_screen extends Activity {
         }
         );
 
-//        new Thread(new Runnable() {
-//            public void run() {
-//                while (true) {
-//                    // Update the progress bar, adjust brightness
-//                    attentionBar.post(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            attentionBar.setProgress(attentionVal);
-//                        }
-//
-//                    });
-//                    meditationBar.post(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            meditationBar.setProgress(meditationVal);
-//                        }
-//                    });
-//                }
-//            }
-//        }).start();
-
 
         // Create tag stream reader
         tgStreamReader = new TgStreamReader(mBluetoothAdapter, callback);
-
+        // set up for logging
         tgStreamReader.setGetDataTimeOutTime(6);
         // start logging
         tgStreamReader.startLog();
@@ -122,9 +106,7 @@ public class main_screen extends Activity {
     }
 
     private SeekBar brightnessBar;
-    private ProgressBar meditationBar;
     private int meditationVal;
-    private ProgressBar attentionBar;
     private int attentionVal;
     private Button startButton;
     private Button stopButton;
@@ -140,8 +122,6 @@ public class main_screen extends Activity {
         // initialize variables
         brightnessBar = (SeekBar) findViewById(R.id.brightnessBar);
         brightnessText = (TextView) findViewById(R.id.brightnessText);
-        attentionBar = (ProgressBar) findViewById(R.id.attentionBar);
-        meditationBar = (ProgressBar) findViewById(R.id.meditationBar);
         startButton = (Button) findViewById(R.id.startButton);
         stopButton = (Button) findViewById(R.id.stopButton);
 
@@ -154,7 +134,7 @@ public class main_screen extends Activity {
         // set text
         attentionText.setText("Attention: "+attentionVal);
         meditationText.setText("Meditation: "+meditationVal);
-        // start eeg read
+        // start EEG read
         startButton.setOnClickListener(new OnClickListener() {
 
             @Override
@@ -172,6 +152,7 @@ public class main_screen extends Activity {
             }
         });
 
+        // stop EEG read
         stopButton.setOnClickListener(new OnClickListener() {
 
             @Override
@@ -187,8 +168,9 @@ public class main_screen extends Activity {
     }
 
 
-    // stop eeg read
+
     public void stop() {
+        // stop NeuroSky bluetooth conection
         if(tgStreamReader != null){
             // stops reading from bluetooth device
             tgStreamReader.stop();
@@ -198,7 +180,7 @@ public class main_screen extends Activity {
 
     @Override
     protected void onDestroy() {
-        //releases resources
+        //releases resources on stop
         if(tgStreamReader != null){
             tgStreamReader.close();
             tgStreamReader = null;
@@ -208,21 +190,23 @@ public class main_screen extends Activity {
 
     @Override
     protected void onStart() {
+        // on NeuroSky bluetooth start
         super.onStart();
     }
 
     @Override
     protected void onStop() {
+        // on NeuroSky bluetooth stop
         super.onStop();
         stop();
     }
 
-    // (7) demo of TgStreamHandler
+    // tag stream handler handles reads from NeuroSky bluetooth
     private TgStreamHandler callback = new TgStreamHandler() {
-
         @Override
         public void onStatesChanged(int connectionStates) {
-            // TODO Auto-generated method stub
+            // state change handler
+            // Connected and failed are the most importnant
             Log.d(TAG, "connectionStates change to: " + connectionStates);
             switch (connectionStates) {
                 case ConnectionStates.STATE_CONNECTED:
@@ -261,15 +245,14 @@ public class main_screen extends Activity {
 
         @Override
         public void onRecordFail(int a) {
-            // TODO Auto-generated method stub
+            // log connection failures
             Log.e(TAG,"onRecordFail: " +a);
 
         }
 
         @Override
         public void onChecksumFail(byte[] payload, int length, int checksum) {
-            // TODO Auto-generated method stub
-
+            // loc connection failures
             badPacketCount ++;
             Message msg = LinkDetectedHandler.obtainMessage();
             msg.what = MSG_UPDATE_BAD_PACKET;
@@ -280,7 +263,7 @@ public class main_screen extends Activity {
 
         @Override
         public void onDataReceived(int datatype, int data, Object obj) {
-            // TODO Auto-generated method stub
+            // process link data, direct it to LinkDetectedHandler
             Message msg = LinkDetectedHandler.obtainMessage();
             msg.what = datatype;
             msg.arg1 = data;
@@ -289,11 +272,10 @@ public class main_screen extends Activity {
             //Log.i(TAG,"onDataReceived");
         }    };
 
-    private boolean isPressing = false;
     private static final int MSG_UPDATE_BAD_PACKET = 1001;
     private static final int MSG_UPDATE_STATE = 1002;
 
-    int raw;
+    // handles packets processed by tgStreamHandler
     private Handler LinkDetectedHandler = new Handler() {
 
         @Override
@@ -366,16 +348,15 @@ public class main_screen extends Activity {
         if(attentionVal>meditationVal){
             if(brightness < attentionVal*2.55) {
                 // only increment if brightness < attnetion
-                brightness = brightness + 10;
+                brightness = brightness + BRIGHT_INCREMENT;
             }
         }
         else {
             if(brightness > MAX_BRIGHTNESS-meditationVal*2.55) {
                 // only decrement if brightness > meditation
-                brightness = brightness - 10;
+                brightness = brightness - BRIGHT_INCREMENT;
             }
         }
         setScreenBrightness(brightness);
     }
 }
-
